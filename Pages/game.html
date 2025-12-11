@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rock Paper Scissors | Professional</title>
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #f4f6f9, #d9e2ec);
+        margin: 0;
+        text-align: center;
+    }
+
+    header {
+        background-color: #0a3d62;
+        color: white;
+        padding: 40px 20px;
+        font-size: 32px;
+        font-weight: bold;
+    }
+
+    .game-container {
+        margin: 40px auto;
+        max-width: 600px;
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+        color: #0a3d62;
+        margin-bottom: 20px;
+    }
+
+    .choices {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+    }
+
+    .choice-btn {
+        border: none;
+        background: #eaf2fb;
+        border-radius: 12px;
+        padding: 20px;
+        cursor: pointer;
+        transition: transform 0.2s, background 0.2s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100px;
+        font-size: 24px;
+    }
+
+    .choice-btn:hover {
+        transform: scale(1.1);
+        background: #cde0f7;
+    }
+
+    .choice-btn i {
+        font-size: 50px;
+        margin-bottom: 10px;
+        color: #0a3d62;
+    }
+
+    .results {
+        font-size: 20px;
+        margin: 20px 0;
+        font-weight: bold;
+        color: #0a3d62;
+        min-height: 40px;
+        transition: all 0.3s;
+    }
+
+    .scoreboard {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+        margin-bottom: 20px;
+    }
+
+    .scoreboard div {
+        background: #eaf2fb;
+        padding: 15px 25px;
+        border-radius: 8px;
+        border-left: 5px solid #0a3d62;
+        font-size: 18px;
+    }
+
+    #resetBtn {
+        background-color: #0066cc;
+        color: white;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: background 0.2s;
+    }
+
+    #resetBtn:hover {
+        background-color: #004a99;
+    }
+
+    footer {
+        margin-top: 40px;
+        background-color: #0a3d62;
+        color: white;
+        padding: 20px;
+    }
+
+    @media(max-width: 500px){
+        .choices {
+            flex-direction: column;
+            gap: 15px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<header>Rock Paper Scissors</header>
+
+<div class="game-container">
+    <h2>Choose your move</h2>
+    <div class="choices">
+        <button class="choice-btn" data-choice="rock">
+            <i class="fa-solid fa-hand-back-fist"></i>
+            Rock
+        </button>
+        <button class="choice-btn" data-choice="paper">
+            <i class="fa-solid fa-hand"></i>
+            Paper
+        </button>
+        <button class="choice-btn" data-choice="scissors">
+            <i class="fa-solid fa-hand-scissors"></i>
+            Scissors
+        </button>
+    </div>
+
+    <div class="results" id="results">Make your move!</div>
+
+    <div class="scoreboard">
+        <div>Player: <span id="playerScore">0</span></div>
+        <div>Computer: <span id="computerScore">0</span></div>
+    </div>
+
+    <button id="resetBtn">Reset Game</button>
+</div>
+
+<footer>© 2025 Douglas Seals</footer>
+
+<script>
+let playerScore = 0;
+let computerScore = 0;
+
+const choices = document.querySelectorAll('.choice-btn');
+const results = document.getElementById('results');
+const playerScoreEl = document.getElementById('playerScore');
+const computerScoreEl = document.getElementById('computerScore');
+
+choices.forEach(button => {
+    button.addEventListener('click', () => {
+        play(button.dataset.choice);
+    });
+});
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+    playerScore = 0;
+    computerScore = 0;
+    playerScoreEl.textContent = playerScore;
+    computerScoreEl.textContent = computerScore;
+    results.textContent = "Game reset! Make your move!";
+});
+
+function play(playerChoice) {
+    const choicesArray = ['rock','paper','scissors'];
+    const computerChoice = choicesArray[Math.floor(Math.random()*3)];
+    let message = `Computer chose ${computerChoice}. `;
+
+    if(playerChoice === computerChoice){
+        message += "It's a tie!";
+        results.style.color = '#0a3d62';
+    } else if (
+        (playerChoice==='rock' && computerChoice==='scissors') ||
+        (playerChoice==='paper' && computerChoice==='rock') ||
+        (playerChoice==='scissors' && computerChoice==='paper')
+    ){
+        message += "You win!";
+        playerScore++;
+        results.style.color = 'green';
+    } else {
+        message += "You lose!";
+        computerScore++;
+        results.style.color = 'red';
+    }
+
+    results.textContent = message;
+    playerScoreEl.textContent = playerScore;
+    computerScoreEl.textContent = computerScore;
+}
+</script>
+
+</body>
+</html>
